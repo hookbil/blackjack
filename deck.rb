@@ -1,9 +1,9 @@
 require_relative 'card'
 class Deck
-  attr_reader :cards
+  attr_reader :hash
 
   def initialize
-    @cards = []
+    @hash = {}
   end
 
   def create_deck
@@ -13,8 +13,19 @@ class Deck
     suits.each do |suit|
       ranks.each do |rank|
         card = "#{rank}#{suit}"
-        @cards.push(card)
+        @hash.store(card, rank) if rank.is_a? Integer
+        @hash.store(card, 0) if rank == 'A'
+        @hash.store(card, 10) if %w[J Q K].include? rank
       end
     end
+    @hash = @hash.to_a.shuffle.to_h
+  end
+
+  def give_card
   end
 end
+
+deck = Deck.new
+deck.create_deck
+puts deck.hash
+puts deck.hash.size

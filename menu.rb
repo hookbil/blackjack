@@ -2,7 +2,6 @@ require_relative 'card'
 require_relative 'deck'
 require_relative 'dealer'
 require_relative 'player'
-# require_relative 'card'
 
 class Menu
   def initialize
@@ -21,16 +20,6 @@ class Menu
     game
   end
 
-  def game_field
-    summary
-    puts "Dealer cards count:#{@dealer.cards.size}, dealer sum:#{@dealer.sum}"
-    puts "Player cards count:#{@player.cards.size}, player sum:#{@player.sum}"
-  end
-
-  def player_cards
-    @player.show_cards
-  end
-
   def game
     loop do
       return open_cards if cards_count
@@ -39,16 +28,11 @@ class Menu
       answer = gets.chomp.to_i
       case answer
       when 1
-        dealer_turn
+        dealer_turn if dealer_cards_count
       when 2
-        add_card
+        add_card if player_cards_count
       when 3
         open_cards
-      when 4
-        puts @dealer.show_cards
-        puts @player.show_cards
-      when 999
-        exit
       end
     end
   end
@@ -79,7 +63,7 @@ class Menu
   end
 
   def open_cards
-    summary
+    endgame_field
     winner
     if winner == 'Ничья'
       puts 'Ничья'
@@ -87,14 +71,16 @@ class Menu
     end
     puts "Выиграл #{winner.name}"
     winner.bank += @bank
-    @bank = 0
+    @bank -= @bank
     retry_game
   end
 
   def retry_game
     puts 'Заново? yes/no'
     answer = gets.chomp.downcase
-    start_game if answer == 'yes'
+    arr = %w[yes y]
+    exit unless arr.include?(answer)
+    start_game if %w[yes y].include?(answer)
   end
 
   def winner
@@ -107,10 +93,6 @@ class Menu
     return @dealer if a > b
   end
 
-  def cards_count
-    @player.cards.size == @dealer.cards.size && @dealer.cards.size == 3
-  end
-
   private
 
   def start_cards
@@ -118,5 +100,38 @@ class Menu
       @deck.give_card(@player)
       @deck.give_card(@dealer)
     end
+  end
+
+  def player_cards_count
+    @player.cards.size < 3 # == @dealer.cards.size && @dealer.cards.size == 3
+  end
+
+  def dealer_cards_count
+    @dealer.cards.size < 3
+  end
+
+  def cards_count
+    @player.cards.size == 3 && @dealer.cards.size == 3
+  end
+
+  def player_cards
+    @player.show_cards
+  end
+
+  def dealer_cards
+    @dealer.show_cards
+  end
+
+  def game_field
+    summary
+    puts "Сумма ставки: #{@bank}"
+    puts "Dealer cards count:#{@dealer.cards.size}"
+    puts "Player cards count:#{@player.cards.size}, player sum:#{@player.sum}, player cards: #{player_cards}"
+  end
+
+  def endgame_field
+    summary
+    puts "Dealer sum:#{@dealer.sum}, dealer cards: #{dealer_cards}"
+    puts "Player sum:#{@player.sum}, player cards: #{player_cards}"
   end
 end

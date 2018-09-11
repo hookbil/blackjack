@@ -4,8 +4,8 @@ require_relative 'dealer'
 require_relative 'player'
 require_relative 'menu'
 menu = Menu.new
-puts "Нажмите 1, чтобы начать игру"
-puts "Нажмите 999, чтобы завершить работу программы"
+puts 'Нажмите 1, чтобы начать игру'
+puts 'Нажмите 999, чтобы завершить работу программы'
 choice = gets.chomp.to_i
 case choice
 when 1

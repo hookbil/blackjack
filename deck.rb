@@ -28,9 +28,9 @@ class Deck
     @cards.shuffle!
   end
 
-  def give_card(player)
+  def give_card
     card = @cards.first
-    player.cards.push(card)
     @cards.delete(card)
+    card
   end
 end

@@ -38,11 +38,6 @@ class Game
     @dealer.cards.size < 3
   end
 
-  def clear_cards
-    @player.cards.clear
-    @dealer.cards.clear
-  end
-
   def cards_count
     @player.cards.size == 3 && @dealer.cards.size == 3
   end
@@ -72,9 +67,15 @@ class Game
 
   def give_money(name)
     prize(name)
+    clear_cards
   end
 
   private
+
+  def clear_cards
+    @player.cards.clear
+    @dealer.cards.clear
+  end
 
   def stake
     @player.bank -= 10

@@ -43,7 +43,6 @@ class Interface
     answer = gets.chomp.downcase
     arr = %w[yes y]
     exit unless arr.include?(answer)
-    @game.clear_cards
     start_game(@name)
   end
 

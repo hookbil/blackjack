@@ -4,31 +4,33 @@ class Game
   def initialize(name)
     @player = Player.new(name)
     @dealer = Dealer.new('Dealer')
+    @deck = Deck.new
   end
 
   def start_game
     @bank = 0
-    @deck = Deck.new
     @deck.create_deck
+    clear_cards
     stake
     start_cards
   end
 
   def dealer_turn
-    return unless dealer_cards_count
     summary
+    return unless dealer_cards_count
     return if @dealer.sum >= 17
     @dealer.cards.push(give_card)
   end
 
   def add_card
     @player.cards.push(give_card) if player_cards_count
+    summary
     dealer_turn
   end
 
-  def check_cards
-    return open_cards if cards_count
-  end
+  # def check_cards
+  #  return open_cards if cards_count
+  # end
 
   def player_cards_count
     @player.cards.size < 3
@@ -56,6 +58,7 @@ class Game
   end
 
   def winner
+    summary
     a = @dealer.sum
     b = @player.sum
     return @player if a > 21
@@ -65,9 +68,15 @@ class Game
     return @dealer if a > b
   end
 
-  def give_money(name)
-    prize(name)
-    clear_cards
+  def give_money(player)
+    player.bank += @bank
+    @bank -= @bank
+  end
+
+  def draw
+    @player.bank += 10
+    @dealer.bank += 10
+    @bank -= 20
   end
 
   private

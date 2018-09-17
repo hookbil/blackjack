@@ -1,12 +1,13 @@
 require_relative 'interface'
 
-menu = Interface.new
-puts 'Нажмите 1, чтобы начать игру'
-puts 'Нажмите 999, чтобы завершить работу программы'
+puts 'Введите имя: '
+name = gets.chomp.capitalize
+menu = Interface.new(name)
+puts 'Начать игру? 1. Начать 999. Выход'
 choice = gets.chomp.to_i
 case choice
 when 1
-  menu.start_game(menu.player_name)
+  menu.new_game
 when 999
   return
 end

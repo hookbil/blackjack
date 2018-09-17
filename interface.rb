@@ -5,10 +5,13 @@ require_relative 'dealer'
 require_relative 'player'
 
 class Interface
-  def start_game(name)
+  def initialize(name)
     @game = Game.new(name)
-    game(@game)
   end
+
+  #def start_game
+  #  new_game(@game)
+  #end
 
   def player_name
     puts 'Введите имя: '
@@ -16,24 +19,32 @@ class Interface
   end
 
   def endgame_field
+    @game.summary
     puts "Dealer sum:#{@game.dealer.sum}, dealer cards: #{@game.dealer_cards}"
     puts "Player sum:#{@game.player.sum}, player cards: #{@game.player_cards}"
+    puts "Player balance: #{@game.player.bank}"
+    puts "Dealer balance: #{@game.dealer.bank}"
   end
 
   def game_field
+    @game.summary
     puts "Сумма ставки: #{@game.bank}"
-    puts "Dealer cards count:#{@game.dealer.cards.size}, dealer cards: #{@game.dealer_cards}"
+    puts "Dealer cards count:#{@game.dealer.cards.size}"
     puts "Player cards count:#{@game.player.cards.size}, player sum:#{@game.player.sum}, player cards: #{@game.player_cards}"
   end
 
   def open_cards
-    endgame_field
     winner
+    endgame_field
   end
 
   def winner
     winner = @game.winner
-    return puts 'Ничья' if winner == 'Ничья'
+    if winner == 'Ничья'
+      @game.draw
+      puts 'Ничья'
+      return
+    end
     puts "Выиграл #{winner.name}"
     @game.give_money(winner)
   end
@@ -42,27 +53,21 @@ class Interface
     puts 'Заново? yes/no'
     answer = gets.chomp.downcase
     arr = %w[yes y]
-    exit unless arr.include?(answer)
-    start_game(@name)
+    new_game if arr.include?(answer)
   end
 
-  def game(*)
+  def new_game
     @game.start_game
-    @game.check_cards
-    loop do
-      @game.summary
-      game_field
-      puts '1. Пропустить \n2. Добавить карты \n3. Открыть карты'
-      answer = gets.chomp.to_i
-      case answer
-      when 1
-        @game.dealer_turn
-      when 2
-        @game.add_card
-      when 3
-        open_cards
-        retry_game
-      end
+    game_field
+    puts '1. Пропустить ход 2. Взять карту 3. Открыть карты'
+    answer = gets.chomp.to_i
+    case answer
+    when 1
+      @game.dealer_turn
+    when 2
+      @game.add_card
+    when 3
+      open_cards
     end
   end
 end

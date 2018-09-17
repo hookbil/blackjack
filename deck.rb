@@ -22,6 +22,7 @@ class Deck
           price = 10
         end
         card = Card.new(card_suit, price)
+        @cards.push(card)
       end
     end
     @cards.shuffle!

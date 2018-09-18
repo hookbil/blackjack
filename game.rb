@@ -29,16 +29,20 @@ class Game
     dealer_turn
   end
 
-  # def check_cards
-  #  return open_cards if cards_count
-  # end
-
   def player_cards_count
     @player.cards.size < 3
   end
 
   def dealer_cards_count
     @dealer.cards.size < 3
+  end
+
+  def player_lost
+    @player.sum > 21
+  end
+
+  def dealer_lost
+    @dealer.sum > 21
   end
 
   def cards_count

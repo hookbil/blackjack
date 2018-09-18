@@ -30,6 +30,10 @@ class Interface
     puts "Player cards count:#{@game.player.cards.size}, player sum:#{@game.player.sum}, player cards: #{@game.player_cards}"
   end
 
+  def player_cards
+    return '2. Взять карту ' if @game.player_cards_count
+  end
+
   def open_cards
     winner
     endgame_field
@@ -50,19 +54,14 @@ class Interface
     @game.give_money(winner)
   end
 
-  def retry_game
-    puts 'Заново? yes/no'
-    answer = gets.chomp.downcase
-    arr = %w[yes y]
-    exit unless arr.include?(answer)
-  end
-
   def new_game
     @game.start_game
     loop do
       game_field
+      return if @game.player_lost
+      return if @game.dealer_lost
       return if @game.cards_count
-      puts '1. Пропустить ход 2. Взять карту 3. Открыть карты'
+      puts "1. Пропустить ход #{player_cards} 3. Открыть карты"
       answer = gets.chomp.to_i
       case answer
       when 1

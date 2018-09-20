@@ -30,8 +30,12 @@ class Interface
     puts "Player cards count:#{@game.player.cards.size}, player sum:#{@game.player.sum}, player cards: #{@game.player_cards}"
   end
 
-  def player_cards
+  def player_turn
     return '2. Взять карту ' if @game.player_cards_count
+  end
+
+  def dealer_turn
+    return '1. Пропустить ход' if @game.dealer_can_take
   end
 
   def open_cards
@@ -51,7 +55,7 @@ class Interface
       return
     end
     puts "Выиграл #{winner.name}"
-    @game.give_money(winner)
+    @game.give_prize
   end
 
   def new_game
@@ -61,7 +65,7 @@ class Interface
       return if @game.player_lost
       return if @game.dealer_lost
       return if @game.cards_count
-      puts "1. Пропустить ход #{player_cards} 3. Открыть карты"
+      puts "#{dealer_turn} #{player_turn} 3. Открыть карты"
       answer = gets.chomp.to_i
       case answer
       when 1

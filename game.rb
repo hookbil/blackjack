@@ -13,7 +13,10 @@ class Game
     clear_cards
     stake
     start_cards
-    puts @deck.cards.size
+  end
+
+  def give_prize
+    give_money(winner)
   end
 
   def dealer_turn
@@ -57,6 +60,10 @@ class Game
     @dealer.show_cards
   end
 
+  def dealer_can_take
+    dealer_cards_count && @dealer.sum < 17
+  end
+
   def summary
     @dealer.summary
     @player.summary
@@ -74,11 +81,6 @@ class Game
     return @dealer if a > b
   end
 
-  def give_money(player)
-    player.bank += @bank
-    @bank -= @bank
-  end
-
   def draw
     @player.bank += 10
     @dealer.bank += 10
@@ -93,14 +95,14 @@ class Game
 
   private
 
+  def give_money(player)
+    player.bank += @bank
+    @bank -= @bank
+  end
+
   def clear_cards
     @player.cards.clear
     @dealer.cards.clear
-  end
-
-  def prize(player)
-    player.bank += @bank
-    @bank -= @bank
   end
 
   def start_cards

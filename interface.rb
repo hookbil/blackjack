@@ -18,16 +18,16 @@ class Interface
 
   def endgame_field
     @game.summary
-    puts "Dealer sum:#{@game.dealer.sum}, dealer cards: #{@game.dealer_cards}"
-    puts "Player sum:#{@game.player.sum}, player cards: #{@game.player_cards}"
-    puts "Player balance: #{@game.player.bank}"
-    puts "Dealer balance: #{@game.dealer.bank}"
+    puts "Dealer sum:#{@game.status[:dealer_sum]}, dealer cards: #{@game.status[:dealer_cards]}"
+    puts "Player sum:#{@game.status[:player_sum]}, player cards: #{@game.status[:player_cards]}"
+    puts "Player balance: #{@game.status[:player_bank]}"
+    puts "Dealer balance: #{@game.status[:dealer_bank]}"
   end
 
   def game_field
     @game.summary
-    puts "Dealer cards count:#{@game.dealer.cards.size}"
-    puts "Player cards count:#{@game.player.cards.size}, player sum:#{@game.player.sum}, player cards: #{@game.player_cards}"
+    puts "Dealer cards count:#{@game.status[:dealer_hand]}"
+    puts "Player cards count:#{@game.status[:player_hand]}, player sum: #{@game.status[:player_sum]}, player cards: #{@game.status[:player_cards]}"
   end
 
   def player_turn
@@ -67,14 +67,8 @@ class Interface
       return if @game.cards_count
       puts "#{dealer_turn} #{player_turn} 3. Открыть карты"
       answer = gets.chomp.to_i
-      case answer
-      when 1
-        @game.dealer_turn
-      when 2
-        @game.add_card
-      when 3
-        return
-      end
+      return if answer == 3
+      @game.turn(answer)
     end
   end
 end

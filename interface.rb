@@ -31,11 +31,11 @@ class Interface
   end
 
   def player_turn
-    return '2. Взять карту ' if @game.player_cards_count
+    return '2. Взять карту ' if @game.status[:player_turn]
   end
 
   def dealer_turn
-    return '1. Пропустить ход' if @game.dealer_can_take
+    return '1. Пропустить ход' if @game.status[:dealer_turn]
   end
 
   def open_cards

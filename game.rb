@@ -27,7 +27,9 @@ class Game
       player_sum: player_sum,
       dealer_sum: dealer_sum,
       player_bank: player_bank,
-      dealer_bank: dealer_bank
+      dealer_bank: dealer_bank,
+      player_turn: player_cards_count,
+      dealer_turn: dealer_can_take
     }
   end
 
@@ -70,9 +72,7 @@ class Game
     @dealer.show_cards
   end
 
-  def dealer_can_take
-    dealer_cards_count && @dealer.sum < 17
-  end
+
 
   def summary
     @dealer.summary
@@ -100,6 +100,7 @@ class Game
   end
 
   def stake
+    return unless @end_game.zero?
     @player.bank -= 10
     @dealer.bank -= 10
     @bank += 20
@@ -108,6 +109,18 @@ class Game
   private
 
   attr_reader :dealer
+
+  def dealer_can_take
+    dealer_cards_count && @dealer.sum < 17
+  end
+
+  def dealer_turn
+    dealer_can_take
+  end
+
+  def player_turn
+    player_cards_count
+  end
 
   def player_bank
     @player.bank

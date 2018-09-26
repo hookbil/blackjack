@@ -29,13 +29,14 @@ class Game
       player_bank: player_bank,
       dealer_bank: dealer_bank,
       player_turn: player_cards_count,
-      dealer_turn: dealer_can_take
+      dealer_turn: dealer_can_take,
+      player_cards_count: player_cards_count,
+      dealer_cards_count: dealer_cards_count,
+      player_lost: player_lost,
+      dealer_lost: dealer_lost,
+      cards_count: cards_count,
+      winner: winner
     }
-  end
-
-  def give_prize
-    return if @end_game.zero?
-    give_money(winner)
   end
 
   def turn(player_decision)
@@ -43,53 +44,14 @@ class Game
     add_card if player_decision == 2
   end
 
-  def player_cards_count
-    @player.cards.size < 3
-  end
-
-  def dealer_cards_count
-    @dealer.cards.size < 3
-  end
-
-  def player_lost
-    @player.sum > 21
-  end
-
-  def dealer_lost
-    @dealer.sum > 21
-  end
-
-  def cards_count
-    @player.cards.size == 3 && @dealer.cards.size == 3
-  end
-
-  def player_cards
-    @player.show_cards
-  end
-
-  def dealer_cards
-    return 'Ещё не время' if @end_game == 0
-    @dealer.show_cards
-  end
-
-
-
   def summary
     @dealer.summary
     @player.summary
   end
 
-  def winner
-    summary
-    @end_game = 1
-    a = @dealer.sum
-    b = @player.sum
-    return 'Ничья' if a == b
-    return 'Ничья' if a > 21 && b > 21
-    return @player if a > 21
-    return @dealer if b > 21
-    return @player if b > a
-    return @dealer if a > b
+  def give_prize
+    return if @end_game.zero?
+    give_money(winner)
   end
 
   def draw
@@ -110,12 +72,50 @@ class Game
 
   attr_reader :dealer
 
-  def dealer_can_take
-    dealer_cards_count && @dealer.sum < 17
+  def winner
+    summary
+    @end_game = 1
+    a = @dealer.sum
+    b = @player.sum
+    return 'Ничья' if a == b
+    return 'Ничья' if a > 21 && b > 21
+    return @player if a > 21
+    return @dealer if b > 21
+    return @player if b > a
+    return @dealer if a > b
   end
 
-  def dealer_turn
-    dealer_can_take
+  def dealer_cards
+    return 'Ещё не время' if @end_game.zero?
+    @dealer.show_cards
+  end
+
+  def player_cards
+    @player.show_cards
+  end
+
+  def cards_count
+    @player.cards.size == 3 && @dealer.cards.size == 3
+  end
+
+  def player_cards_count
+    @player.cards.size < 3
+  end
+
+  def dealer_cards_count
+    @dealer.cards.size < 3
+  end
+
+  def player_lost
+    @player.sum > 21
+  end
+
+  def dealer_lost
+    @dealer.sum > 21
+  end
+
+  def dealer_can_take
+    dealer_cards_count && @dealer.sum < 17
   end
 
   def player_turn

@@ -48,7 +48,7 @@ class Interface
   end
 
   def winner
-    winner = @game.winner
+    winner = @game.status[:winner]
     if winner == 'Ничья'
       @game.draw
       puts 'Ничья'
@@ -62,9 +62,9 @@ class Interface
     @game.start_game
     loop do
       game_field
-      return if @game.player_lost
-      return if @game.dealer_lost
-      return if @game.cards_count
+      return if @game.status[:player_lost]
+      return if @game.status[:dealer_lost]
+      return if @game.status[:cards_count]
       puts "#{dealer_turn} #{player_turn} 3. Открыть карты"
       answer = gets.chomp.to_i
       return if answer == 3

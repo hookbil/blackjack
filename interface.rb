@@ -26,7 +26,7 @@ class Interface
 
   def game_field
     @game.summary
-    puts "Dealer cards count:#{@game.status[:dealer_hand]}"
+    # puts "Dealer cards count:#{@game.status[:dealer_hand]}"
     puts "Player cards count:#{@game.status[:player_hand]}, player sum: #{@game.status[:player_sum]}, player cards: #{@game.status[:player_cards]}"
   end
 
@@ -35,7 +35,7 @@ class Interface
   end
 
   def dealer_turn
-    return '1. Пропустить ход' if @game.status[:dealer_turn]
+    return '1. Пропустить ход' unless @game.status[:dealer_already_made_turn]
   end
 
   def open_cards
@@ -62,6 +62,7 @@ class Interface
     @game.start_game
     loop do
       game_field
+      return if @game.status[:time_to_open_cards]
       return if @game.status[:player_lost]
       return if @game.status[:dealer_lost]
       return if @game.status[:cards_count]

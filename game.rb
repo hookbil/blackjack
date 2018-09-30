@@ -1,6 +1,6 @@
 class Game
   attr_accessor :bank
-  attr_reader :player
+  attr_reader :player, :dealer_turn_count
   def initialize(name)
     @player = Player.new(name)
     @dealer = Dealer.new('Dealer')
@@ -9,6 +9,7 @@ class Game
 
   def start_game
     @end_game = 0
+    @dealer_turn_count = 0
     @bank = 0
     @deck.create_deck
     clear_cards
@@ -35,7 +36,9 @@ class Game
       player_lost: player_lost,
       dealer_lost: dealer_lost,
       cards_count: cards_count,
-      winner: winner
+      winner: winner,
+      dealer_already_made_turn: dealer_already_made_turn,
+      time_to_open_cards: time_to_open_cards
     }
   end
 
@@ -118,6 +121,14 @@ class Game
     dealer_cards_count && @dealer.sum < 17
   end
 
+  def time_to_open_cards
+    @player.cards.size == 3 && @dealer_turn_count > 0
+  end
+
+  def dealer_already_made_turn
+    @dealer_turn_count > 0
+  end
+
   def player_turn
     player_cards_count
   end
@@ -131,6 +142,7 @@ class Game
   end
 
   def dealer_hand
+    return if @end_game.zero?
     @dealer.cards.size
   end
 
@@ -148,6 +160,7 @@ class Game
 
   def dealer_turn
     summary
+    @dealer_turn_count += 1
     return unless dealer_cards_count
     return if @dealer.sum >= 17
     @dealer.cards.push(give_card)

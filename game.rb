@@ -195,3 +195,4 @@ class Game
     @deck.give_card
   end
 end
+

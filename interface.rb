@@ -19,7 +19,7 @@ class Interface
   def endgame_field
     @game.summary
     puts "Dealer sum:#{@game.status[:dealer_sum]}, dealer cards: #{@game.status[:dealer_cards]}"
-    puts "Player sum:#{@game.status[:player_sum]}, player cards: #{@game.status[:player_cards]}"
+    puts "Player sum:#{@game.status[:player_sum]}, player cards: #{@game.player.show_cards}"
     puts "Player balance: #{@game.status[:player_bank]}"
     puts "Dealer balance: #{@game.status[:dealer_bank]}"
   end
@@ -27,15 +27,11 @@ class Interface
   def game_field
     @game.summary
     # puts "Dealer cards count:#{@game.status[:dealer_hand]}"
-    puts "Player cards count:#{@game.status[:player_hand]}, player sum: #{@game.status[:player_sum]}, player cards: #{@game.status[:player_cards]}"
-  end
-
-  def player_turn
-    return '2. Взять карту ' if @game.status[:player_turn]
+    puts "Player cards count:#{@game.player.cards.size}, player sum: #{@game.status[:player_sum]}, player cards: #{@game.player.show_cards}"
   end
 
   def dealer_turn
-    return '1. Пропустить ход' unless @game.status[:dealer_already_made_turn]
+    return '1. Пропустить ход' unless @game.dealer_turn_count > 0
   end
 
   def open_cards
@@ -48,7 +44,7 @@ class Interface
   end
 
   def winner
-    winner = @game.status[:winner]
+    winner = @game.winner
     if winner == 'Ничья'
       @game.draw
       puts 'Ничья'
@@ -62,11 +58,11 @@ class Interface
     @game.start_game
     loop do
       game_field
-      return if @game.status[:time_to_open_cards]
-      return if @game.status[:player_lost]
-      return if @game.status[:dealer_lost]
-      return if @game.status[:cards_count]
-      puts "#{dealer_turn} #{player_turn} 3. Открыть карты"
+      # return if @game.status[:time_to_open_cards]
+      # return if @game.who_lost
+      # return if @game.status[:cards_count]
+      return if @game.time_to_open_cards
+      puts "#{dealer_turn} 2. Взять карту 3. Открыть карты"
       answer = gets.chomp.to_i
       return if answer == 3
       @game.turn(answer)

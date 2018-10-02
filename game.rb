@@ -19,26 +19,11 @@ class Game
 
   def status
     {
-      name: @player.name,
-      bank: @bank,
-      player_cards: player_cards,
       dealer_cards: dealer_cards,
-      player_hand: player_hand,
-      dealer_hand: dealer_hand,
       player_sum: player_sum,
       dealer_sum: dealer_sum,
       player_bank: player_bank,
-      dealer_bank: dealer_bank,
-      player_turn: player_cards_count,
-      dealer_turn: dealer_can_take,
-      player_cards_count: player_cards_count,
-      dealer_cards_count: dealer_cards_count,
-      player_lost: player_lost,
-      dealer_lost: dealer_lost,
-      cards_count: cards_count,
-      winner: winner,
-      dealer_already_made_turn: dealer_already_made_turn,
-      time_to_open_cards: time_to_open_cards
+      dealer_bank: dealer_bank
     }
   end
 
@@ -71,10 +56,6 @@ class Game
     @bank += 20
   end
 
-  private
-
-  attr_reader :dealer
-
   def winner
     summary
     @end_game = 1
@@ -88,6 +69,16 @@ class Game
     return @dealer if a > b
   end
 
+  def time_to_open_cards
+    return true if @dealer.sum > 21 || @player.sum > 21
+    return true if @player.cards.size == 3 && @dealer.cards.size == 3
+    return true if @player.cards.size == 3 && @dealer_turn_count > 0
+  end
+
+  private
+
+  attr_reader :dealer
+
   def dealer_cards
     return 'Ещё не время' if @end_game.zero?
     @dealer.show_cards
@@ -97,9 +88,9 @@ class Game
     @player.show_cards
   end
 
-  def cards_count
-    @player.cards.size == 3 && @dealer.cards.size == 3
-  end
+  # def cards_count
+  #  @player.cards.size == 3 && @dealer.cards.size == 3
+  # end
 
   def player_cards_count
     @player.cards.size < 3
@@ -109,25 +100,17 @@ class Game
     @dealer.cards.size < 3
   end
 
-  def player_lost
-    @player.sum > 21
-  end
+  # def dealer_can_take
+  #  dealer_cards_count && @dealer.sum < 17
+  # end
 
-  def dealer_lost
-    @dealer.sum > 21
-  end
+  # def time_to_open_cards
+  #  @player.cards.size == 3 && @dealer_turn_count > 0
+  # end
 
-  def dealer_can_take
-    dealer_cards_count && @dealer.sum < 17
-  end
-
-  def time_to_open_cards
-    @player.cards.size == 3 && @dealer_turn_count > 0
-  end
-
-  def dealer_already_made_turn
-    @dealer_turn_count > 0
-  end
+  # def dealer_already_made_turn
+  #   @dealer_turn_count > 0
+  # end
 
   def player_turn
     player_cards_count
@@ -139,15 +122,6 @@ class Game
 
   def dealer_bank
     @dealer.bank
-  end
-
-  def dealer_hand
-    return if @end_game.zero?
-    @dealer.cards.size
-  end
-
-  def player_hand
-    @player.cards.size
   end
 
   def player_sum

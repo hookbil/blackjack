@@ -10,14 +10,14 @@ class Dealer
 
   def summary
     @sum = 0
-    @cards.each { |card| @sum += card.price }
     @cards.each do |card|
-      next unless card.price.zero?
-      card.price = if @sum > 10
-                     1
-                   else
-                     11
-                   end
+      if card.price.zero?
+        card.price = if @sum > 10
+                       1
+                     else
+                       11
+                     end
+      end
       @sum += card.price
     end
   end

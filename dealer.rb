@@ -12,11 +12,7 @@ class Dealer
     @sum = 0
     @cards.each do |card|
       if card.price.zero?
-        card.price = if @sum > 10
-                       1
-                     else
-                       11
-                     end
+        card.price = @sum > 10 ? 1 : 11
       end
       @sum += card.price
     end
@@ -24,7 +20,7 @@ class Dealer
 
   def show_cards
     hand = {}
-    @cards.each { |card| hand[card.suit] = card.price } # "#{card.suit}, #{card.price}" }
+    @cards.each { |card| hand[card.suit] = card.price }
     hand
   end
 end

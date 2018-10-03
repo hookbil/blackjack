@@ -8,12 +8,11 @@ class Deck
   end
 
   def create_deck
-    suits = Card::SUITS
+    card_symbols = Card::CARD_SYMBOLS
     ranks = Card::RANKS
     @cards.clear unless @cards.empty?
-    suits.each do |suit|
+    card_symbols.each do |card_symbol|
       ranks.each do |rank|
-        card_suit = "#{rank}#{suit}"
         if rank.is_a? Integer
           price = rank
         elsif rank == 'A'
@@ -21,7 +20,7 @@ class Deck
         else
           price = 10
         end
-        card = Card.new(card_suit, price)
+        card = Card.new(card_symbol, rank, price)
         @cards.push(card)
       end
     end
@@ -29,7 +28,6 @@ class Deck
   end
 
   def give_card
-    card = @cards.pop
-    card
+    @cards.pop
   end
 end

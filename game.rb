@@ -88,10 +88,6 @@ class Game
     @player.show_cards
   end
 
-  # def cards_count
-  #  @player.cards.size == 3 && @dealer.cards.size == 3
-  # end
-
   def player_cards_count
     @player.cards.size < 3
   end
@@ -99,18 +95,6 @@ class Game
   def dealer_cards_count
     @dealer.cards.size < 3
   end
-
-  # def dealer_can_take
-  #  dealer_cards_count && @dealer.sum < 17
-  # end
-
-  # def time_to_open_cards
-  #  @player.cards.size == 3 && @dealer_turn_count > 0
-  # end
-
-  # def dealer_already_made_turn
-  #   @dealer_turn_count > 0
-  # end
 
   def player_turn
     player_cards_count

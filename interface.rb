@@ -26,7 +26,6 @@ class Interface
 
   def game_field
     @game.summary
-    # puts "Dealer cards count:#{@game.status[:dealer_hand]}"
     puts "Player cards count:#{@game.player.cards.size}, player sum: #{@game.status[:player_sum]}, player cards: #{@game.player.show_cards}"
   end
 
@@ -38,7 +37,7 @@ class Interface
     winner
     endgame_field
     puts 'Заново? yes/no'
-    answer = gets.chomp.downcase
+    answer = gets.chomp.strip.downcase
     arr = %w[yes y]
     exit unless arr.include?(answer)
   end
@@ -58,9 +57,6 @@ class Interface
     @game.start_game
     loop do
       game_field
-      # return if @game.status[:time_to_open_cards]
-      # return if @game.who_lost
-      # return if @game.status[:cards_count]
       return if @game.time_to_open_cards
       puts "#{dealer_turn} 2. Взять карту 3. Открыть карты"
       answer = gets.chomp.to_i

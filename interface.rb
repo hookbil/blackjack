@@ -18,15 +18,15 @@ class Interface
 
   def endgame_field
     @game.summary
-    puts "Dealer sum:#{@game.status[:dealer_sum]}, dealer cards: #{@game.status[:dealer_cards]}"
-    puts "Player sum:#{@game.status[:player_sum]}, player cards: #{@game.player.show_cards}"
-    puts "Player balance: #{@game.status[:player_bank]}"
-    puts "Dealer balance: #{@game.status[:dealer_bank]}"
+    puts "Dealer sum:#{@game.dealer_sum}, dealer cards: #{@game.dealer_cards}"
+    puts "Player sum:#{@game.player_sum}, player cards: #{@game.player.show_cards}"
+    puts "Player balance: #{@game.player_bank}"
+    puts "Dealer balance: #{@game.dealer_bank}"
   end
 
   def game_field
     @game.summary
-    puts "Player cards count:#{@game.player.cards.size}, player sum: #{@game.status[:player_sum]}, player cards: #{@game.player.show_cards}"
+    puts "Player cards count:#{@game.player.cards.size}, player sum: #{@game.player_sum}, player cards: #{@game.player.show_cards}"
   end
 
   def dealer_turn

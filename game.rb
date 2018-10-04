@@ -17,16 +17,6 @@ class Game
     start_cards
   end
 
-  def status
-    {
-      dealer_cards: dealer_cards,
-      player_sum: player_sum,
-      dealer_sum: dealer_sum,
-      player_bank: player_bank,
-      dealer_bank: dealer_bank
-    }
-  end
-
   def turn(player_decision)
     dealer_turn if player_decision == 1
     add_card if player_decision == 2
@@ -75,14 +65,31 @@ class Game
     return true if @player.cards.size == 3 && @dealer_turn_count > 0
   end
 
-  private
-
-  attr_reader :dealer
-
   def dealer_cards
     return 'Ещё не время' if @end_game.zero?
     @dealer.show_cards
   end
+
+  def player_sum
+    @player.sum
+  end
+
+  def dealer_sum
+    return 'Ещё не время' if @end_game.zero?
+    @dealer.sum
+  end
+
+  def player_bank
+    @player.bank
+  end
+
+  def dealer_bank
+    @dealer.bank
+  end
+
+  private
+
+  attr_reader :dealer
 
   def player_cards
     @player.show_cards
@@ -98,22 +105,6 @@ class Game
 
   def player_turn
     player_cards_count
-  end
-
-  def player_bank
-    @player.bank
-  end
-
-  def dealer_bank
-    @dealer.bank
-  end
-
-  def player_sum
-    @player.sum
-  end
-
-  def dealer_sum
-    @dealer.sum
   end
 
   def dealer_turn
